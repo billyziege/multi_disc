@@ -116,7 +116,7 @@ contains
     !Since the discs should be ordered (see selfConsistent above), then
     !we can simply proceed backwards through the discs (removing them) until
     !we get to a disc with position above zero. 
-    type(DiscPulse), intent(in) :: this
+    type(DiscPulse), intent(inout) :: this
     type(LinkedChargedDisc), pointer :: current_link
     type(LinkedChargedDisc), pointer :: prev_link
     
@@ -143,7 +143,7 @@ contains
     call initDiscPulse(disc_pulse_out,0)
     do i = 1, this%number_of_discs , 1
       linked_charged_disc => getLinkedChargedDisc(this%discs, i)
-      call addChargedDisc(this, linked_charged_disc%disc)
+      call addChargedDisc(disc_pulse_out, linked_charged_disc%disc)
     end do
   end function copyDiscPulse
 
