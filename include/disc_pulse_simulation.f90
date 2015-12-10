@@ -102,11 +102,11 @@ contains
       call addChargedDisc(disc_pulse_out, linked_charged_disc%disc)
       goal_dt = initial_disc_pulse%insertion_times(i+1)
       dt = goal_dt
-      do while(time < goal_dt)
-        call position_dependent_advance(disc_pulse_out,dt,simulation_parameters)
-        time = time + dt
-        dt = goal_dt - time
-      end do
+      !do while(time < goal_dt)
+      !  call position_dependent_advance(disc_pulse_out,dt,simulation_parameters)
+      !  time = time + dt
+      !  dt = goal_dt - time
+      !end do
     end do
     linked_charged_disc => getLinkedChargedDisc(initial_disc_pulse%disc_pulse%discs, &
            initial_disc_pulse%disc_pulse%number_of_discs)

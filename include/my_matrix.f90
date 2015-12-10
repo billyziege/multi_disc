@@ -52,7 +52,6 @@ contains
     integer :: i
     integer :: j
     call setMyMatrixDimensions(matrix,dimensions)
-    allocate(matrix%value(dimensions,dimensions))
     do i = 1, dimensions, 1
       do j = 1, dimensions, 1
         call setMyMatrixValue(matrix,i,j,0.0D+00)

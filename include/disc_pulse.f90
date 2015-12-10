@@ -83,7 +83,6 @@ contains
     type(DiscPulse), intent(inout) :: this
     call freeAllLinkedDiscs(this%discs)
     nullify(this%discs)
-    deallocate(this%discs)
   end subroutine freeDiscPulse
 
   function selfConsistent(this) result(is_consistent)
