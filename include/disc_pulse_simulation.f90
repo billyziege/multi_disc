@@ -1,10 +1,11 @@
 module class_DiscPulseSimulation
   !This module provides functions
   !detailing the simulation.
-  implicit none
   use class_DiscPulse
+  use class_InitialDiscPulse
   use class_DistributionParameters
-  use class_IntegratorParameters
+  use class_Integrator
+  implicit none
   private :: advance_time_step
   private :: position_dependent_advance
   public :: SimulationParameters
@@ -32,19 +33,19 @@ contains
   end subroutine initSimulationParameters
 
   function getSimulationParametersIntegratorType(this) result(integrator_type)
-    type(SimulationParameters), intent(inout) :: this
+    type(SimulationParameters), intent(in) :: this
     character(len=3) :: integrator_type
     integrator_type = getIntegratorParametersIntegratorType(this%integrator_parameters)
   end function getSimulationParametersIntegratorType
 
   function getSimulationParametersDistType(this) result(dist_type)
-    type(SimulationParameters), intent(inout) :: this
+    type(SimulationParameters), intent(in) :: this
     character(len=1) :: dist_type
     dist_type = getDistributionParametersDistType(this%distribution_parameters)
   end function getSimulationParametersDistType
 
   function getSimulationParametersDistScale(this) result(dist_scale)
-    type(SimulationParameters), intent(inout) :: this
+    type(SimulationParameters), intent(in) :: this
     double precision :: dist_scale
     dist_scale = getDistributionParametersDistScale(this%distribution_parameters)
   end function getSimulationParametersDistScale
@@ -52,13 +53,12 @@ contains
   subroutine advance_time_step(disc_pulse_in,dt,simulation_parameters)
     type(DiscPulse), intent(inout) :: disc_pulse_in
     double precision, intent(inout):: dt
-    type(SimulationParameters, intent(in):: simultion_parameters
+    type(SimulationParameters), intent(in):: simulation_parameters
     type(DiscPulse) :: new_disc_pulse
     logical :: accept
 
     call initDiscPulse(new_disc_pulse,0)
     new_disc_pulse = copyDiscPulse(disc_pulse_in)
-    dt = original_dt
     accept = .FALSE.
 
     do while( .not. accept)
@@ -71,25 +71,25 @@ contains
       end if
     end do
     call removeDiscsAbsorbedByCathode(new_disc_pulse)
-    freeDiscPulse(disc_pulse_in)
-    call initDiscPulse(disc_pulse_in)
+    call freeDiscPulse(disc_pulse_in)
+    call initDiscPulse(disc_pulse_in,0)
     disc_pulse_in = copyDiscPulse(new_disc_pulse)
-    freeDiscPulse(new_disc_pulse)
+    call freeDiscPulse(new_disc_pulse)
   end subroutine advance_time_step
 
   subroutine position_dependent_advance(disc_pulse_in,dt,simulation_parameters)
     type(DiscPulse), intent(inout) :: disc_pulse_in
     double precision, intent(inout):: dt
-    type(SimulationParameters, intent(in):: simultion_parameters
+    type(SimulationParameters), intent(in):: simulation_parameters
 
     call calcPositionDependentField(disc_pulse_in,simulation_parameters%distribution_parameters)
     call advance_time_step(disc_pulse_in,dt,simulation_parameters)
   end subroutine position_dependent_advance
 
   function emission_simulation(initial_disc_pulse,disc_pulse_out,simulation_parameters) result(time)
-    type(InitialDiscPulse), intent(in) :: intial_disc_pulse
+    type(InitialDiscPulse), intent(in) :: initial_disc_pulse
     type(DiscPulse), intent(inout) :: disc_pulse_out
-    type(SimulationParameters, intent(in):: simultion_parameters
+    type(SimulationParameters), intent(in):: simulation_parameters
     type(LinkedChargedDisc), pointer :: linked_charged_disc
     double precision :: dt
     double precision :: goal_dt
@@ -115,9 +115,9 @@ contains
 
   subroutine post_emission_simulation(disc_pulse,simulation_parameters,time,dt,end_time)
     type(DiscPulse), intent(inout) :: disc_pulse
-    type(SimulationParameters, intent(in):: simultion_parameters
-    double precisionm intent(inout) :: time
-    double precision, intent(in) :: dt
+    type(SimulationParameters), intent(in):: simulation_parameters
+    double precision, intent(inout) :: time
+    double precision, intent(inout) :: dt
     double precision, intent(in) :: end_time
 
     do while(time < end_time)

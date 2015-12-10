@@ -7,14 +7,14 @@ module class_DistributionParameters
   private ::  setDistributionParametersDistType
   private ::  setDistributionParametersDistScale
   private ::  calcDistributionParametersCoefficient
-  private ::  getDistributionParametersDistType
-  private ::  getDistributionParametersDistScale
   private ::  calcUniformCoefficient
   private ::  calcGaussianCoefficient
   public :: DistributionParameters
   public :: initDistributionParameters
   public :: getDistributionsFieldComponent
-  public ::  getDistributionParametersCoefficient
+  public :: getDistributionParametersCoefficient
+  public ::  getDistributionParametersDistType
+  public ::  getDistributionParametersDistScale
 
   interface
     function derfce(x)

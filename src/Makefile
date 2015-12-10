@@ -11,7 +11,7 @@ RM = rm
 
 # GNU COMPILER
 FC = gfortran
-FFLAGS = -I$(IDIR) -J$(MODDIR)
+FFLAGS = -m64 -I$(IDIR) -J$(MODDIR)
 #FFLAGS = -Wall -ffree-line-length-0 -Wtabs -fdefault-real-8 -I$(IDIR) -J$(MODDIR)
 # INTEL COMPILER
 #FC = ifort

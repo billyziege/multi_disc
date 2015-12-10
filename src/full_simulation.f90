@@ -1,6 +1,6 @@
 program simulate_dynamic_disc_pulse
-  use calss_DiscPulse
-  use calss_InitialDiscPulse
+  use class_DiscPulse
+  use class_InitialDiscPulse
   use class_DiscPulseSimulation
   implicit none
   
