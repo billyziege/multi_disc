@@ -43,7 +43,7 @@ test_linked_charged_disc: $(TEST_LINKED_CHARGED_DISC_OBJ)
 test_disc_pulse: $(TEST_DISC_PULSE_OBJ)
 	$(FC) -o $(TESTDIR)/test_disc_pulse $@.f90 $^ $(FFLAGS)
 test_initial_disc_pulse: $(TEST_INITIAL_DISC_PULSE_OBJ)
-	$(FC) -o $(TESTDIR)/test_disc_pulse $@.f90 $^ $(FFLAGS)
+	$(FC) -o $(TESTDIR)/test_initial_disc_pulse $@.f90 $^ $(FFLAGS)
 full_simulation: $(FULL_SIMULATION_OBJ)
 	$(FC) -o $(BINDIR)/full_simulation $@.f90 $^ $(FFLAGS)
 
