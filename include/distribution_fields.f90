@@ -6,13 +6,13 @@ module class_DistributionFields
   !This wraps a bunch of other 
   !modules, and provides the equations
   !derived from each of the distributions.
-  implicit none
   use class_ChargedDisc
   use class_LinkedChargedDisc
   use class_DiscPulse
   use class_DistributionParameters
-  use class_Matrix
-  private :: calcFieldMatrix 
+  use class_MyMatrix
+  implicit none
+  private :: calcFieldMyMatrix 
   public :: calcExtractionField
   public :: calcInFrontField
   public :: calcPositionDependentField
@@ -61,26 +61,26 @@ contains
     call setChargedDiscInFrontField(linked_charged_disc%disc,in_front_field)
   end subroutine calcInFrontField
 
-  subroutine calcFieldMatrix(disc_pulse,distribution_parameters,field_matrix)
+  subroutine calcFieldMyMatrix(disc_pulse,distribution_parameters,field_matrix)
     type(DiscPulse), intent(in) :: disc_pulse
     type(DistributionParameters), intent(in) :: distribution_parameters
-    type(Matrix), intent(inout) :: field_matrix
+    type(MyMatrix), intent(inout) :: field_matrix
     integer :: i
     integer :: j
     type(LinkedChargedDisc), pointer :: linked_charged_disc_i
     type(LinkedChargedDisc), pointer :: linked_charged_disc_j
     double precision :: value
-    do i = 1, getMatrixDimensions(field_matrix), 1
+    do i = 1, getMyMatrixDimensions(field_matrix), 1
       linked_charged_disc_i => getLinkedChargedDisc(disc_pulse%discs, i)
-      do j = i, getMatrixDimensions(field_matrix), 1
+      do j = i, getMyMatrixDimensions(field_matrix), 1
         linked_charged_disc_j => getLinkedChargedDisc(disc_pulse%discs, j)
         value = getDistributionsFieldComponent(getChargedDiscPosition(linked_charged_disc_i%disc), &
                  getChargedDiscPosition(linked_charged_disc_j%disc), &
                  distribution_parameters)
-        call setMatrixValue(field_matrix,i,j,value)!Sets both i,j and j,i
+        call setMyMatrixValue(field_matrix,i,j,value)!Sets both i,j and j,i
       end do
     end do
-  end subroutine calcFieldMatrix
+  end subroutine calcFieldMyMatrix
 
   subroutine calcPositionDependentField(disc_pulse,distribution_parameters)
     !Calculates and stores within the charged disc object the "position dependent" 
@@ -89,19 +89,19 @@ contains
     type(DistributionParameters), intent(in) :: distribution_parameters
     type(LinkedChargedDisc), pointer :: linked_charged_disc_i
     type(LinkedChargedDisc), pointer :: linked_charged_disc_j
-    type(Matrix), pointer :: field_matrix
+    type(MyMatrix), pointer :: field_matrix
     integer :: i
     integer :: j
     double precision :: field
  
-    call initMatrix(field_matrix,disc_pulse%number_of_discs)
-    call calcFieldMatrix(disc_pulse,distribution_parameters,field_matrix)
+    call initMyMatrix(field_matrix,disc_pulse%number_of_discs)
+    call calcFieldMyMatrix(disc_pulse,distribution_parameters,field_matrix)
     do i = 1, getDiscPulseNumberOfDiscs(disc_pulse), 1
       linked_charged_disc_i => getLinkedChargedDisc(disc_pulse%discs, i)
       field = 0
       do j = 1, getDiscPulseNumberOfDiscs(disc_pulse), 1
         linked_charged_disc_j => getLinkedChargedDisc(disc_pulse%discs, j)
-        field = field + getMatrixValue(field_matrix,i,j) * &
+        field = field + getMyMatrixValue(field_matrix,i,j) * &
                  getChargedDiscCharge(linked_charged_disc_j%disc)
       end do
       setChargedDiscPositionDependentField(linked_charged_disc_i%disc,field)

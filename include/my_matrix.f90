@@ -1,63 +1,63 @@
-module class_Matrix
+module class_MyMatrix
   !This module provides an interface
   !to a symmetric matrix.  I've chosen
   !ease of coding over the concerns of
   !memory.
   implicit none
-  private :: setMatrixDimensions
-  public :: getMatrixDimensions
-  public ::  setMatrixValue
-  public ::  getMatrixValue
-  public ::  initMatrix
+  private :: setMyMatrixDimensions
+  public ::  getMyMatrixDimensions
+  public ::  setMyMatrixValue
+  public ::  getMyMatrixValue
+  public ::  initMyMatrix
 
-  type Matrix
+  type MyMatrix
     integer :: dimensions
     double precision, allocatable :: value(:,:)
-  end type Matrix
+  end type MyMatrix
 
 contains
 
-  subroutine setMatrixDimensions(matrix,dimensions)
-    type(Matrix), intent(inout) :: matrix
+  subroutine setMyMatrixDimensions(matrix,dimensions)
+    type(MyMatrix), intent(inout) :: matrix
     integer, intent(in) :: dimensions
     matrix%dimensions = dimensions
-  end subroutine setMatrixDimensions
+  end subroutine setMyMatrixDimensions
 
-  function getMatrixDimensions(matrix) result(dimensions)
-    type(Matrix), intent(inout) :: matrix
+  function getMyMatrixDimensions(matrix) result(dimensions)
+    type(MyMatrix), intent(inout) :: matrix
     integer :: dimensions
     dimensions = matrix%dimensions
-  end function getMatrixDimensions
+  end function getMyMatrixDimensions
 
-  subroutine setMatrixValue(matrix,i,j,value)
-    type(Matrix), intent(inout) :: matrix
+  subroutine setMyMatrixValue(matrix,i,j,value)
+    type(MyMatrix), intent(inout) :: matrix
     integer, intent(in) :: i
     integer, intent(in) :: j
     double precision, intent(in) :: value
     matrix%value(i,j) = value
-  end subroutine setMatrixValue
+  end subroutine setMyMatrixValue
 
-  function getMatrixValue(matrix,i,j) result(value)
-    type(Matrix), intent(inout) :: matrix
+  function getMyMatrixValue(matrix,i,j) result(value)
+    type(MyMatrix), intent(inout) :: matrix
     integer, intent(in) :: i
     integer, intent(in) :: j
     double precision :: value
     value = matrix%value(i,j)
-  end function getMatrixValue
+  end function getMyMatrixValue
 
-  subroutine initMatrix(matrix,dimensions)
+  subroutine initMyMatrix(matrix,dimensions)
     !Set all values in the symmetric matrix to 0.
-    type(Matrix), intent(inout) :: matrix
+    type(MyMatrix), intent(inout) :: matrix
     integer, intent(in) :: dimensions
     integer :: i
     integer :: j
-    call setMatrixDimensions(matrix,dimensions)
-    allocate(matrix%values(dimensions,dimensions))
+    call setMyMatrixDimensions(matrix,dimensions)
+    allocate(matrix%value(dimensions,dimensions))
     do i = 1, dimensions, 1
       do j = 1, dimensions, 1
-        setMatrixValue(matrix,i,j,0.0)
+        call setMyMatrixValue(matrix,i,j,0.0D+00)
       end do
     end do
-  end subroutine initMatrix
+  end subroutine initMyMatrix
 
-end module class_Matrix
+end module class_MyMatrix

@@ -112,8 +112,8 @@ contains
     !Returns the charged disc from link with the disc_index.
     !If disc_index is not provided, the present this_link is assumed.
     type(LinkedChargedDisc), pointer :: this_link
-    type(LinkedChargedDisc), pointer :: linked_charged_disc
     integer, intent(in) :: disc_index
+    type(LinkedChargedDisc), pointer :: linked_charged_disc
     type(ChargedDisc), pointer :: charged_disc
 
     linked_charged_disc => getLinkedChargedDisc(this_link,disc_index)
@@ -255,7 +255,7 @@ contains
     type(LinkedChargedDisc), pointer :: first_link
     type(ChargedDisc), intent(in) :: charged_disc
     character(len=*), intent(in), optional :: position
-    character(len=len(position)) :: lower_position
+    character(len=6) :: lower_position
 
     if( .not. present(position) ) then
       lower_position = "append"
