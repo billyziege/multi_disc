@@ -12,6 +12,7 @@ module class_DiscPulseSimulation
   public :: initSimulationParameters
   public ::  emission_simulation
   public ::  post_emission_simulation
+  public ::  reportSimulationParameters
 
 
   type SimulationParameters
@@ -127,6 +128,12 @@ contains
     end do
   end subroutine post_emission_simulation
 
-!Report on disc pulse.
+  subroutine reportSimulationParameters(this)
+    type(SimulationParameters), intent(in) :: this
+    call reportIntegratorParameters(this%integrator_parameters)
+    call reportDistributionParameters(this%distribution_parameters)
+    print *, "increase dt factor = ", this%increase_dt_factor
+  end subroutine reportSimulationParameters
+
 
 end module class_DiscPulseSimulation

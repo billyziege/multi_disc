@@ -15,6 +15,7 @@ module class_Integrator
   public :: runge_kutta_4_disc_pulse
   public :: runge_kutta_step
   public :: runge_kutta_4_combine
+  public :: reportIntegratorParameters
 
   type IntegratorParameters
     character(len=3) :: integrator_type
@@ -145,5 +146,10 @@ contains
       call setChargedDiscVelocity(linked_charged_disc_3%disc, temp_v) !Overwrites, but this is the end
     end do
   end subroutine runge_kutta_4_combine
+
+  subroutine reportIntegratorParameters(this)
+    type(IntegratorParameters), intent(in) :: this
+    print *, "integrator type = ", this%integrator_type
+  end subroutine reportIntegratorParameters
 
 end module class_Integrator

@@ -15,6 +15,7 @@ module class_DistributionParameters
   public :: getDistributionParametersCoefficient
   public ::  getDistributionParametersDistType
   public ::  getDistributionParametersDistScale
+  public ::  reportDistributionParameters
 
   interface
     function derfce(x)
@@ -139,5 +140,12 @@ contains
     value = add*derfce(add)-sub*derfce(abs(sub))
     value = sqrt(pi)*getDistributionParametersCoefficient(distribution_parameters)*value
   end function getGaussianFieldComponent
+  
+  subroutine reportDistributionParameters(this)
+    type(DistributionParameters), intent(in) :: this
+    print *, "distribution type = ", this%dist_type
+    print *, "distribution scale = ", this%dist_scale
+    print *, "distribution coefficient = ", this%coefficient
+  end subroutine reportDistributionParameters
 
 end module class_DistributionParameters
