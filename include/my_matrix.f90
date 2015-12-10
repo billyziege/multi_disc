@@ -17,46 +17,52 @@ module class_MyMatrix
 
 contains
 
-  subroutine setMyMatrixDimensions(matrix,dimensions)
-    type(MyMatrix), intent(inout) :: matrix
+  subroutine setMyMatrixDimensions(this,dimensions)
+    type(MyMatrix), intent(inout) :: this
     integer, intent(in) :: dimensions
-    matrix%dimensions = dimensions
+    this%dimensions = dimensions
   end subroutine setMyMatrixDimensions
 
-  function getMyMatrixDimensions(matrix) result(dimensions)
-    type(MyMatrix), intent(inout) :: matrix
+  function getMyMatrixDimensions(this) result(dimensions)
+    type(MyMatrix), intent(in) :: this
     integer :: dimensions
-    dimensions = matrix%dimensions
+    dimensions = this%dimensions
   end function getMyMatrixDimensions
 
-  subroutine setMyMatrixValue(matrix,i,j,value)
-    type(MyMatrix), intent(inout) :: matrix
+  subroutine setMyMatrixValue(this,i,j,value)
+    type(MyMatrix), intent(inout) :: this
     integer, intent(in) :: i
     integer, intent(in) :: j
     double precision, intent(in) :: value
-    matrix%value(i,j) = value
+    this%value(i,j) = value
   end subroutine setMyMatrixValue
 
-  function getMyMatrixValue(matrix,i,j) result(value)
-    type(MyMatrix), intent(inout) :: matrix
+  function getMyMatrixValue(this,i,j) result(value)
+    type(MyMatrix), intent(in) :: this
     integer, intent(in) :: i
     integer, intent(in) :: j
     double precision :: value
-    value = matrix%value(i,j)
+    value = this%value(i,j)
   end function getMyMatrixValue
 
-  subroutine initMyMatrix(matrix,dimensions)
+  subroutine initMyMatrix(this,dimensions)
     !Set all values in the symmetric matrix to 0.
-    type(MyMatrix), intent(inout) :: matrix
+    type(MyMatrix), intent(inout) :: this
     integer, intent(in) :: dimensions
     integer :: i
     integer :: j
-    call setMyMatrixDimensions(matrix,dimensions)
+    call setMyMatrixDimensions(this,dimensions)
+    allocate(this%value(dimensions,dimensions))
     do i = 1, dimensions, 1
       do j = 1, dimensions, 1
-        call setMyMatrixValue(matrix,i,j,0.0D+00)
+        call setMyMatrixValue(this,i,j,0.0D+00)
       end do
     end do
   end subroutine initMyMatrix
+ 
+  subroutine freeMyMatrix(this)
+    type(MyMatrix), intent(inout) :: this
+    deallocate(this%value)
+  end subroutine freeMyMatrix
 
 end module class_MyMatrix
