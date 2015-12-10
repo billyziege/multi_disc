@@ -32,11 +32,11 @@ contains
     if( .not. present(only_disc_i) ) then
       do i = 1, this%number_of_discs , 1
         linked_charged_disc => getLinkedChargedDisc(this%discs, i)
-        call setChargedDiscExtractionField(linkedChargedDisc%disc,extraction_field)
+        call setChargedDiscExtractionField(linked_charged_disc%disc,extraction_field)
       end do
     else
       linked_charged_disc => getLinkedChargedDisc(this%discs, only_disc_i)
-      call setChargedDiscExtractionField(linkedChargedDisc%disc,extraction_field)
+      call setChargedDiscExtractionField(linked_charged_disc%disc,extraction_field)
     end if
   end subroutine calcExtractionField
 
@@ -96,15 +96,15 @@ contains
  
     call initMyMatrix(field_matrix,disc_pulse%number_of_discs)
     call calcFieldMyMatrix(disc_pulse,distribution_parameters,field_matrix)
-    do i = 1, getDiscPulseNumberOfDiscs(disc_pulse), 1
+    do i = 1, disc_pulse%number_of_discs, 1
       linked_charged_disc_i => getLinkedChargedDisc(disc_pulse%discs, i)
       field = 0
-      do j = 1, getDiscPulseNumberOfDiscs(disc_pulse), 1
+      do j = 1, disc_pulse%number_of_discs, 1
         linked_charged_disc_j => getLinkedChargedDisc(disc_pulse%discs, j)
         field = field + getMyMatrixValue(field_matrix,i,j) * &
                  getChargedDiscCharge(linked_charged_disc_j%disc)
       end do
-      setChargedDiscPositionDependentField(linked_charged_disc_i%disc,field)
+      call setChargedDiscPositionDependentField(linked_charged_disc_i%disc,field)
     end do
   end subroutine calcPositionDependentField
 

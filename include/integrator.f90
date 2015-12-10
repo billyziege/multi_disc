@@ -14,10 +14,10 @@ module class_Integrator
   public :: IntegratorParameters
   public :: getIntegratorParametersIntegratorType
   public :: initIntegratorParameters
-  public :: advanceDiscPulse
+  public :: advance_disc_pulse
 
   type IntegratorParameters
-    character(len=*) :: integrator_type
+    character(len=3) :: integrator_type
   end type IntegratorParameters
 
 contains
@@ -40,22 +40,22 @@ contains
     call setIntegratorParametersIntegratorType(integrator_parameters,integrator_type)
   end subroutine initDistributionParameters
 
-  function advanceDiscPulse(integrator_parameters, disc_pulse_in, &
-        distribution_parmaters, dt) result(disc_pulse_out)
+  subroutine advance_disc_pulse(integrator_parameters, disc_pulse_in, &
+        distribution_parameters, dt, disc_pulse_out)
     !Passes the control to a function specific for the integrator.
     !Currently supports runge kutta 4 only.
     type(IntegratorParameters), intent(inout) :: integrator_parameters
     type(DiscPulse), intent(in) :: disc_pulse_in
     type(DistributionParameters), intent(in) :: distribution_parameters
     double precision, intent(in) :: dt
-    type(DiscPulse) :: disc_pulse_out
+    type(DiscPulse), intent(inout) :: disc_pulse_out
 
     call initDiscPulse(disc_pulse_out)
     disc_pulse_out = copyDiscPulse(disc_pulse_in)
-    if( getIntegratorParametersIntegratorType(integrator_parameters) == "Runge-Kutta 4" ) then
+    if( getIntegratorParametersIntegratorType(integrator_parameters) == "RK4" ) then
       call rungaKutta4DiscPulse(disc_pulse_in, disc_pulse_out, distribution_parameters, dt)
     end if
-  end function advanceDiscPulse
+  end subroutine advance_disc_pulse
 
   subroutine rungeKutta4DiscPulse(disc_pulse_0, disc_pulse_3, distribution_parameters, dt)
     type(DiscPulse), intent(in) :: disc_pulse_0

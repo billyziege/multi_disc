@@ -9,12 +9,12 @@ module class_DistributionParameters
   private ::  calcDistributionParametersCoefficient
   private ::  getDistributionParametersDistType
   private ::  getDistributionParametersDistScale
-  private ::  getDistributionParametersCoefficient
   private ::  calcUniformCoefficient
   private ::  calcGaussianCoefficient
   public :: DistributionParameters
   public :: initDistributionParameters
   public :: getDistributionsFieldComponent
+  public ::  getDistributionParametersCoefficient
 
   interface
     function derfce(x)

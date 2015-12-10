@@ -16,7 +16,7 @@ module class_InitialDiscPulse
 
   type InitialDiscPulse
     type(DiscPulse) :: disc_pulse
-    real, allocatable :: insertion_times(:)
+    double precision, allocatable :: insertion_times(:)
     real :: total_number_of_electrons !Set independent from the disc pulse (will set the electrons in disc pulse)
   end type InitialDiscPulse
 
@@ -82,35 +82,34 @@ contains
     end do
   end subroutine distributeElectrons
 
-  subroutine initInitialDiscPulse(this, number_of_discs, number_of_electrons, charged_discs, &
+  subroutine initInitialDiscPulse(this, number_of_discs, number_of_electrons, &
                distribution_parameters, extraction_field)
     use class_DistributionFields
     type(InitialDiscPulse), intent(inout) :: this
     integer, intent(in) :: number_of_discs
     real, intent(in) :: number_of_electrons
-    type(ChargedDisc), intent(inout) :: charged_discs(number_of_discs)
     type(DistributionParameters), intent(in) :: distribution_parameters
     double precision, optional, intent(in) :: extraction_field
-    real, parameter :: insertion_time_duration = 127E-15
-    real :: time_step_size
+    double precision, parameter :: insertion_time_duration = 127D-15
+    double precision :: time_step_size
     integer :: i
 
-    call initDiscPulse(this%disc_pulse,number_of_discs,charged_discs)
+    call initDiscPulse(this%disc_pulse,number_of_discs)
     this%total_number_of_electrons = number_of_electrons
     call distributeElectrons(this)
 
-    time_step_size = insertion_time_duration/(number_of_discs-1.0)
+    time_step_size = insertion_time_duration/(number_of_discs-1.0D+00)
     allocate(this%insertion_times(number_of_discs))
-    this%insertion_times(1) = 0.0
+    this%insertion_times(1) = 0.0D+00
     if( present(extraction_field) ) then
-      call calcExtractionField(this, extraction_field, 1)
+      call calcExtractionField(this%disc_pulse, extraction_field, 1)
     end if 
     do i = 2, number_of_discs , 1
       this%insertion_times(i) = this%insertion_times(i-1) + time_step_size
       if( present(extraction_field) ) then
-        call calcExtractionField(this, extraction_field, i)
+        call calcExtractionField(this%disc_pulse, extraction_field, i)
       end if 
-      call calcInFrontField(disc_pulse,i,distribution_parameters)
+      call calcInFrontField(this%disc_pulse,i,distribution_parameters)
     end do
   end subroutine initInitialDiscPulse
     
