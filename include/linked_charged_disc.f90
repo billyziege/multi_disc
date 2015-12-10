@@ -43,10 +43,10 @@ contains
     
     allocate(this_link)
     this_link%prev_link => this_link
-    this_link%disc_initialized = .FALSE.
+    this_link%disc_initialized = .TRUE.
     if( .not. present(charged_disc) ) then
       call initChargedDisc(this_link%disc,0.0)
-      this_link%disc_initialized = .TRUE.
+      this_link%disc_initialized = .FALSE.
     else
       this_link%disc = copyChargedDisc(charged_disc)
     end if
@@ -296,6 +296,9 @@ contains
     else
       current_link => getLinkedChargedDisc(this_link,only_disc_i)      
       print *, "Disc index = ", current_link%disc_index
+      if( .not. this_link%disc_initialized ) then
+        print *, 'Not initialized'
+      end if
       call reportChargedDisc(current_link%disc)
     end if
   end subroutine reportLinkedChargedDisc
