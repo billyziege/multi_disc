@@ -77,7 +77,7 @@ contains
         value = getDistributionsFieldComponent(getChargedDiscPosition(linked_charged_disc_i%disc), &
                  getChargedDiscPosition(linked_charged_disc_j%disc), &
                  distribution_parameters)
-        call setMyMatrixValue(field_matrix,i,j,value)!Sets both i,j and j,i
+        call setMyMatrixValue(field_matrix,i,j,value)
       end do
     end do
   end subroutine calcFieldMyMatrix
@@ -94,6 +94,7 @@ contains
     integer :: j
     double precision :: field
  
+    allocate(field_matrix)
     call initMyMatrix(field_matrix,disc_pulse%number_of_discs)
     call calcFieldMyMatrix(disc_pulse,distribution_parameters,field_matrix)
     do i = 1, disc_pulse%number_of_discs, 1
@@ -101,11 +102,13 @@ contains
       field = 0
       do j = 1, disc_pulse%number_of_discs, 1
         linked_charged_disc_j => getLinkedChargedDisc(disc_pulse%discs, j)
-        field = field + getMyMatrixValue(field_matrix,i,j) * &
+        field = field - getMyMatrixValue(field_matrix,i,j) * &
                  getChargedDiscCharge(linked_charged_disc_j%disc)
       end do
       call setChargedDiscPositionDependentField(linked_charged_disc_i%disc,field)
     end do
+    call freeMyMatrix(field_matrix)
+    deallocate(field_matrix)
   end subroutine calcPositionDependentField
 
 end module class_DistributionFields
