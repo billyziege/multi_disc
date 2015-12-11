@@ -51,7 +51,7 @@ contains
     double precision, intent(in) :: dt
     type(DiscPulse), intent(inout) :: disc_pulse_out
 
-    call initDiscPulse(disc_pulse_out,0)
+    !call initDiscPulse(disc_pulse_out,0)
     disc_pulse_out = copyDiscPulse(disc_pulse_in)
     if( getIntegratorParametersIntegratorType(integrator_parameters) == "RK4" ) then
       call runge_kutta_4_disc_pulse(disc_pulse_in, disc_pulse_out, distribution_parameters, dt)
@@ -97,9 +97,9 @@ contains
     double precision :: temp_v
     double precision :: charge_mass_ratio = 1.7588200227239E11! = 1.60217662E-19 C / 9.10938356E-31 kg 
 
+    linked_charged_disc_in => disc_pulse_in%discs
+    linked_charged_disc_in_prime => disc_pulse_in_prime%discs
     do i = 1, disc_pulse_in%number_of_discs , 1
-      linked_charged_disc_in => getLinkedChargedDisc(disc_pulse_in%discs, i)
-      linked_charged_disc_in_prime => getLinkedChargedDisc(disc_pulse_in_prime%discs, i)
       temp_z = getChargedDiscPosition(linked_charged_disc_in%disc) + dt * &
                  getChargedDiscVelocity(linked_charged_disc_in_prime%disc)
       temp_v = getChargedDiscVelocity(linked_charged_disc_in%disc) + dt * &
@@ -108,6 +108,8 @@ contains
       linked_charged_disc_out => getLinkedChargedDisc(disc_pulse_out%discs, i)
       call setChargedDiscPosition(linked_charged_disc_out%disc, temp_z)
       call setChargedDiscVelocity(linked_charged_disc_out%disc, temp_v)
+      linked_charged_disc_in => linked_charged_disc_in%next_link
+      linked_charged_disc_in_prime => linked_charged_disc_in_prime%next_link
     end do
   end subroutine runge_kutta_step
 
