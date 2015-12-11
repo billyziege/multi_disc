@@ -152,6 +152,7 @@ contains
     print *, "  mass = ", getChargedDiscMass(this)
     print *, "  extraction field = ", getChargedDiscExtractionField(this)
     print *, "  in front field = ", getChargedDiscInFrontField(this)
+    print *, "  position dependent field = ",  getChargedDiscPositionDependentField(this)
     print *, "  full field = ", getChargedDiscFullField(this)
     print *, "  velocity = ", getChargedDiscVelocity(this)
     print *, "  position = ", getChargedDiscPosition(this)
