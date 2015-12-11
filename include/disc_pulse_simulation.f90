@@ -107,6 +107,7 @@ contains
         call position_dependent_advance(disc_pulse_out,dt,simulation_parameters)
         time = time + dt
         dt = goal_dt - time
+        !print *, time
       end do
     end do
     linked_charged_disc => getLinkedChargedDisc(initial_disc_pulse%disc_pulse%discs, &
@@ -122,6 +123,7 @@ contains
     double precision, intent(in) :: end_time
 
     do while(time < end_time)
+      !print *, time
       call position_dependent_advance(disc_pulse,dt,simulation_parameters)
       time = time + dt
       dt = dt * simulation_parameters%increase_dt_factor
