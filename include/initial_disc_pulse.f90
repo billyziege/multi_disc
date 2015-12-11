@@ -17,7 +17,7 @@ module class_InitialDiscPulse
   type InitialDiscPulse
     type(DiscPulse) :: disc_pulse
     double precision, allocatable :: insertion_times(:)
-    real :: total_number_of_electrons !Set independent from the disc pulse (will set the electrons in disc pulse)
+    double precision :: total_number_of_electrons !Set independent from the disc pulse (will set the electrons in disc pulse)
   end type InitialDiscPulse
 
 contains
@@ -71,7 +71,7 @@ contains
     type(InitialDiscPulse), intent(inout) :: this
     type(LinkedChargedDisc), pointer :: linked_charged_disc
     double precision :: probability_array(this%disc_pulse%number_of_discs)
-    real :: number_of_electrons
+    double precision :: number_of_electrons
     integer :: i
     probability_array = split_normal_distribution(this%disc_pulse%number_of_discs)
     do i = 1, this%disc_pulse%number_of_discs , 1
@@ -87,7 +87,7 @@ contains
     use class_DistributionFields
     type(InitialDiscPulse), intent(inout) :: this
     integer, intent(in) :: number_of_discs
-    real, intent(in) :: number_of_electrons
+    double precision, intent(in) :: number_of_electrons
     type(DistributionParameters), intent(in) :: distribution_parameters
     double precision, optional, intent(in) :: extraction_field
     double precision, parameter :: insertion_time_duration = 127D-15

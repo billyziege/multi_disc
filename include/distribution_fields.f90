@@ -47,10 +47,11 @@ contains
     integer, intent(in) :: disc_i
     type(DistributionParameters), intent(in) :: distribution_parameters
     type(LinkedChargedDisc), pointer :: linked_charged_disc
-    real :: q_in_front = 0
+    double precision :: q_in_front
     double precision :: in_front_field
     integer :: j
 
+    q_in_front = 0
     do j = 1, disc_i-1, 1 !These are the discs in front of disc i.
       linked_charged_disc => getLinkedChargedDisc(disc_pulse%discs, j)
       q_in_front = q_in_front + getChargedDiscCharge(linked_charged_disc%disc)

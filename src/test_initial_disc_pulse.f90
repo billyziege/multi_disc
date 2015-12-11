@@ -8,7 +8,7 @@ program test_initial_disc_pulse
   character(len=9) :: number_of_electrons_string
   character(len=1) :: dist_type
   integer :: number_of_discs
-  real :: number_of_electrons
+  double precision :: number_of_electrons
 
   call getarg(1,number_of_discs_string)
   read (number_of_discs_string, *) number_of_discs

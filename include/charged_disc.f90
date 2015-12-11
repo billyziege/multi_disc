@@ -27,7 +27,7 @@ module class_ChargedDisc
 
   type ChargedDisc
      !Defines the object
-     real :: number_of_electrons !Need not be an integer
+     double precision :: number_of_electrons !Need not be an integer
      double precision :: extraction_field !Always constant
      double precision :: in_front_field !Dependent only on charges in front
      double precision :: position_dependent_field !Dependent on charge and position --- must be calculated at each step.
@@ -39,13 +39,13 @@ contains
 
   subroutine setChargedDiscNumberOfElectrons(this,number_of_electrons)
     type(ChargedDisc), intent(inout) :: this
-    real, intent(in) :: number_of_electrons
+    double precision, intent(in) :: number_of_electrons
     this%number_of_electrons = number_of_electrons
   end subroutine setChargedDiscNumberOfElectrons
 
   function getChargedDiscNumberOfElectrons(this) result(number_of_electrons)
     type(ChargedDisc), intent(in) :: this
-    real :: number_of_electrons
+    double precision :: number_of_electrons
     number_of_electrons = this%number_of_electrons
   end function getChargedDiscNumberOfElectrons
 
@@ -135,7 +135,7 @@ contains
   subroutine initChargedDisc(this,number_of_electrons)
     !Initializes the object to specific values (mostly 0)
     type(ChargedDisc), intent(inout) :: this
-    real, intent(in) :: number_of_electrons
+    double precision, intent(in) :: number_of_electrons
     double precision :: initial_velocity = 156918.7 !in m/s, corresponds to an energy of 0.07 eV, the expected kinetic energy
     call setChargedDiscNumberOfElectrons(this,number_of_electrons)
     call setChargedDiscExtractionField(this,0.0D+00)

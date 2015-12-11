@@ -32,7 +32,7 @@ contains
     type(ChargedDisc) :: charged_disc
     integer :: i
 
-    call initChargedDisc(charged_disc,0.0) !Placeholder
+    call initChargedDisc(charged_disc,0.0D+00) !Placeholder
 
     this%number_of_discs = 0
     this%number_of_electrons = 0.0

@@ -45,7 +45,7 @@ contains
     this_link%prev_link => this_link
     this_link%disc_initialized = .TRUE.
     if( .not. present(charged_disc) ) then
-      call initChargedDisc(this_link%disc,0.0)
+      call initChargedDisc(this_link%disc,0.0D+00)
       this_link%disc_initialized = .FALSE.
     else
       this_link%disc = copyChargedDisc(charged_disc)
